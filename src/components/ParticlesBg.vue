@@ -1,0 +1,20 @@
+<template>
+    <vue-particles
+        color="#007bff"
+        :particleOpacity="0.1"
+        :particlesNumber="40"
+        shapeType="polygon"
+        :particleSize="4"
+        linesColor="#007bff"
+        :linesWidth="1"
+        :lineLinked="true"
+        :lineOpacity="0.2"
+        :linesDistance="150"
+        :moveSpeed="3"
+        :hoverEffect="true"
+        hoverMode="grab"
+        :clickEffect="true"
+        clickMode="push"
+        class="particles"
+    ></vue-particles>
+</template>

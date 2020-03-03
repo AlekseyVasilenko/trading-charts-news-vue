@@ -1,0 +1,73 @@
+<template>
+    <div>
+        <b-pagination-nav :link-gen="linkGen" :number-of-pages="pagesCount" use-router></b-pagination-nav>
+
+        <b-card-group columns>
+            <b-card
+                v-for="item in paginatedData"
+                :key="item.id"
+                :title="item.title"
+                :img-src="item.imageurl"
+                :img-alt="item.title"
+                img-top
+            >
+                <b-card-text>{{item.body}}</b-card-text>
+
+                <template v-slot:footer>
+                    <b-link :href="item.guid" class="card-link">Read more</b-link>
+                </template>
+            </b-card>
+        </b-card-group>
+
+        <b-pagination-nav :link-gen="linkGen" :number-of-pages="pagesCount" use-router></b-pagination-nav>
+    </div>
+</template>
+
+<script>
+    import axios from 'axios'
+    import {BCardGroup, BCard, BCardTitle, BCardText, BLink, BButton, BPaginationNav} from 'bootstrap-vue'
+
+    export default {
+        components: {BCardGroup, BCard, BCardTitle, BCardText, BLink, BButton, BPaginationNav},
+        data: () => ({
+            news: [],
+            newsPerPage: 8,
+            apiParams: {
+                link: 'https://min-api.cryptocompare.com/data/v2/news/?lang=EN',
+                key: '532938bd62a8a84670c1beff115b8e875e88eef9d9156c3be40fa685d5b5d7f3',
+            },
+        }),
+        computed: {
+            apiLink() {
+                let {link, key} = this.apiParams;
+
+                return link + '&api_key=' + key;
+            },
+            pagesCount() {
+                return Math.ceil(this.news.length / this.newsPerPage) || 1;
+            },
+            curPage() {
+                return this.$route.query.page
+            },
+            paginatedData() {
+                let curPage = this.curPage || 1;
+                const start = (curPage - 1) * this.newsPerPage,
+                    end = start + this.newsPerPage;
+
+                return this.news.slice(start, end);
+            }
+        },
+        methods: {
+            linkGen(pageNum) {
+                return pageNum === 1 ? '?' : `?page=${pageNum}`
+            }
+        },
+        created() {
+            axios.get(this.apiLink)
+                .then(response => {
+                    this.news = response.data.Data;
+                })
+                .catch(err => console.log(err))
+        }
+    }
+</script>
