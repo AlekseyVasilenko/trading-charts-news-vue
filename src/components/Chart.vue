@@ -1,14 +1,14 @@
 <template>
     <b-row>
-        <b-col>
+        <b-col cols="8">
             <div class="mb-3">
                 <b-form-select
-                        v-for="(selector, key) in selectors"
-                        :key="key"
-                        v-model="apiParams[key]"
-                        :options="selector"
-                        class="col-2 mr-1"
-                        @change="reloadData"
+                    v-for="(selector, key) in selectors"
+                    :key="key"
+                    v-model="apiParams[key]"
+                    :options="selector"
+                    class="col-2 mr-1"
+                    @change="reloadData"
                 />
 
                 <b-button variant="outline-secondary" @click="reloadData">
@@ -18,13 +18,19 @@
 
             <div ref="graph">
                 <trading-vue
-                        :data="chart.data"
-                        :width="chart.width"
-                        :color-back="chart.colors.colorBack"
-                        :color-grid="chart.colors.colorGrid"
-                        :color-text="chart.colors.colorText"
+                    :data="chart.data"
+                    :width="chart.width"
+                    :color-back="chart.colors.colorBack"
+                    :color-grid="chart.colors.colorGrid"
+                    :color-text="chart.colors.colorText"
                 />
             </div>
+        </b-col>
+
+        <b-col>
+            <h4 class="text-center">
+                Your wallets:
+            </h4>
         </b-col>
     </b-row>
 </template>
@@ -59,22 +65,22 @@
             },
             selectors: {
                 crypto: [
-                    {value: 'BTC', text: 'BTC'},
-                    {value: 'ETH', text: 'ETH'},
+                    {text: 'BTC', value: 'BTC'},
+                    {text: 'ETH', value: 'ETH'},
                 ],
                 symbol: [
-                    {value: 'USD', text: 'USD'},
-                    {value: 'EUR', text: 'EUR'},
+                    {text: 'USD', value: 'USD'},
+                    {text: 'EUR', value: 'EUR'},
                 ],
                 timeInterval: [
-                    {value: 'minute', text: 'minute'},
-                    {value: 'hour', text: 'hour'},
-                    {value: 'day', text: 'day'},
+                    {text: 'minute', value: 'minute'},
+                    {text: 'hour', value: 'hour'},
+                    {text: 'day', value: 'day'},
                 ],
                 historyLimit: [
-                    {value: 50, text: 50},
-                    {value: 200, text: 200},
-                    {value: 500, text: 500},
+                    {text: 50, value: 50},
+                    {text: 200, value: 200},
+                    {text: 500, value: 500},
                 ],
             },
         }),
@@ -88,11 +94,11 @@
                 let timeInterval = this.apiParams.timeInterval;
                 switch (timeInterval) {
                     case 'minute':
-                        return 1000 * 60;
+                        return 60000;
                     case 'hour':
-                        return 1000 * 60 * 60;
+                        return 3600000;
                     case 'day':
-                        return 1000 * 60 * 60 * 24;
+                        return 86400000;
                     default:
                         return 1000;
                 }

@@ -4,17 +4,13 @@
             <div class="mb-3">
                 <b-button-group size="sm">
                     <b-button
-                        :to="{name: 'news'}"
+                        v-for="(tab, key) in tabs"
+                        :key="key"
+                        :to="{name: tab.to}"
                         variant="outline-dark"
                         exact-active-class="active outline-dark"
                         exact
-                    >News</b-button>
-                    <b-button
-                        :to="{name: 'chart'}"
-                        variant="outline-dark"
-                        exact-active-class="active outline-dark"
-                        exact
-                    >Charts</b-button>
+                    >{{ tab.text }}</b-button>
                 </b-button-group>
             </div>
 
@@ -30,7 +26,19 @@
     import 'vue-awesome/icons/redo'
 
     export default {
-        components: {BButtonGroup, BButton}
+        components: {BButtonGroup, BButton},
+        data: () => ({
+            tabs: [
+                {
+                    text: 'News',
+                    to: 'news'
+                },
+                {
+                    text: 'Charts',
+                    to: 'chart'
+                },
+            ]
+        })
     }
 </script>
 
