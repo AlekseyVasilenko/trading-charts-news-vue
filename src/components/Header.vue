@@ -7,6 +7,17 @@
                 </svg>
             </div>
 
+            <b-button-group size="sm">
+                <b-button
+                    v-for="(tab, key) in tabs"
+                    :key="key"
+                    :to="{name: tab.to}"
+                    variant="outline-secondary"
+                    exact-active-class="active outline-dark"
+                    exact
+                >{{ tab.text }}</b-button>
+            </b-button-group>
+
             <b-dropdown :text="this.$store.state.user.email" size="sm" split>
                 <b-dropdown-item @click="logout">Logout</b-dropdown-item>
             </b-dropdown>
@@ -17,13 +28,22 @@
 <script>
     import scss from '../assets/scss/header.scss'
 
-    import {BDropdown, BDropdownItem} from 'bootstrap-vue'
+    import {BButton, BButtonGroup, BDropdown, BDropdownItem} from 'bootstrap-vue'
 
     export default {
-        components: {
-            BDropdown,
-            BDropdownItem
-        },
+        components: {BDropdown, BDropdownItem, BButtonGroup, BButton},
+        data: () => ({
+            tabs: [
+                {
+                    text: 'News',
+                    to: 'news'
+                },
+                {
+                    text: 'Charts',
+                    to: 'chart'
+                },
+            ]
+        }),
         methods: {
             logout: function () {
                 this.$store.dispatch('logout')

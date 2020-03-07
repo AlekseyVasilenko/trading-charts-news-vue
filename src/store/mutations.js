@@ -19,4 +19,7 @@ export default {
         state.user = {};
         state.error = {};
     },
+    setNews(state, news) {
+        state.news = news;
+    }
 }

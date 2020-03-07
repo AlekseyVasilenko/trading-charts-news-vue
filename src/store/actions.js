@@ -50,4 +50,7 @@ export default {
             resolve()
         })
     },
+    setNews({commit}, news) {
+        commit('setNews', news);
+    }
 }

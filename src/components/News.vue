@@ -1,5 +1,9 @@
 <template>
     <div>
+        <b-button variant="outline-secondary" @click="reloadData" class="mb-3">
+            <v-icon name="redo"/>&nbsp;reload
+        </b-button>
+
         <b-pagination-nav :link-gen="linkGen" :number-of-pages="pagesCount" use-router></b-pagination-nav>
 
         <b-card-group columns>
@@ -26,11 +30,13 @@
 <script>
     import axios from 'axios'
     import {BCardGroup, BCard, BCardTitle, BCardText, BLink, BButton, BPaginationNav} from 'bootstrap-vue'
+    import {mapGetters} from "vuex"
+    import 'vue-awesome/icons/redo'
+    import VIcon from 'vue-awesome/components/Icon'
 
     export default {
-        components: {BCardGroup, BCard, BCardTitle, BCardText, BLink, BButton, BPaginationNav},
+        components: {BCardGroup, BCard, BCardTitle, BCardText, BLink, BButton, BPaginationNav, VIcon},
         data: () => ({
-            news: [],
             newsPerPage: 8,
             apiParams: {
                 link: 'https://min-api.cryptocompare.com/data/v2/news/?lang=EN',
@@ -38,13 +44,16 @@
             },
         }),
         computed: {
+            ...mapGetters([
+                'getNews'
+            ]),
             apiLink() {
                 let {link, key} = this.apiParams;
 
                 return link + '&api_key=' + key;
             },
             pagesCount() {
-                return Math.ceil(this.news.length / this.newsPerPage) || 1;
+                return Math.ceil(this.getNews.length / this.newsPerPage) || 1;
             },
             curPage() {
                 return this.$route.query.page
@@ -54,20 +63,30 @@
                 const start = (curPage - 1) * this.newsPerPage,
                     end = start + this.newsPerPage;
 
-                return this.news.slice(start, end);
+                return this.getNews.slice(start, end);
             }
         },
         methods: {
             linkGen(pageNum) {
                 return pageNum === 1 ? '?' : `?page=${pageNum}`
-            }
+            },
+            loadData() {
+                axios.get(this.apiLink)
+                    .then(response => {
+                        let news = response.data.Data;
+
+                        this.$store.dispatch('setNews', news);
+                    })
+                    .catch(err => console.log(err))
+            },
+            reloadData() {
+                this.loadData();
+            },
         },
         created() {
-            axios.get(this.apiLink)
-                .then(response => {
-                    this.news = response.data.Data;
-                })
-                .catch(err => console.log(err))
+            if (this.getNews.length === 0) {
+                this.loadData()
+            }
         }
     }
 </script>
