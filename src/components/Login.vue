@@ -1,7 +1,7 @@
 <template>
     <div class="card auth-form">
         <div class="card-body">
-            <Logo />
+            <Logo/>
             <h4>Sign In</h4>
 
             <form @submit.prevent="login">
@@ -22,7 +22,9 @@
                     </transition>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary">
+                    <v-icon v-if="isLoading" name="sync" spin/>&nbsp;Log in
+                </button>
                 <router-link to="/register" tag="button" class="btn btn-link" type="button">Register page</router-link>
             </form>
         </div>
@@ -32,9 +34,12 @@
 <script>
     import Logo from './Logo'
     import {BFormInput, BFormInvalidFeedback} from 'bootstrap-vue'
+    import 'vue-awesome/icons/sync'
+    import VIcon from 'vue-awesome/components/Icon'
+    import {mapGetters} from "vuex";
 
     export default {
-        components: {Logo, BFormInput, BFormInvalidFeedback},
+        components: {Logo, BFormInput, BFormInvalidFeedback, VIcon},
         data: () => ({
             fields: [
                 {
@@ -51,8 +56,13 @@
                 }
             ]
         }),
+        computed: {
+            ...mapGetters([
+                'isLoading'
+            ])
+        },
         methods: {
-            fieldState: function(i) {
+            fieldState: function (i) {
                 if (this.fields[i].name !== this.$store.state.error.field) {
                     return null
                 } else {
@@ -69,7 +79,7 @@
                 this.$store.dispatch('login', payload)
                     .then(() => this.$router.push('/cabinet'))
                     .catch(err => console.log(err))
-            }
+            },
         }
     }
 </script>

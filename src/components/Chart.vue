@@ -28,9 +28,7 @@
         </b-col>
 
         <b-col>
-            <h4 class="text-center">
-                Your wallets:
-            </h4>
+            <h4 class="text-center">Your wallets:</h4>
         </b-col>
     </b-row>
 </template>

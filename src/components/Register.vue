@@ -16,7 +16,9 @@
                     />
                 </div>
 
-                <button type="submit" class="btn btn-primary">Register</button>
+                <button type="submit" class="btn btn-primary">
+                    <v-icon v-if="isLoading" name="sync" spin/>&nbsp;Register
+                </button>
                 <router-link to="/login" tag="button" class="btn btn-link" type="button">Login page</router-link>
             </form>
         </div>
@@ -26,8 +28,11 @@
 <script>
     import Logo from './Logo'
     import {BFormInput} from 'bootstrap-vue'
+    import {mapGetters} from "vuex";
+    import VIcon from "vue-awesome/components/Icon";
 
     export default {
+        components: {Logo, BFormInput, VIcon},
         data: () => ({
             fields: [
                 {
@@ -56,9 +61,10 @@
                 }
             ]
         }),
-        components: {
-            Logo,
-            BFormInput
+        computed: {
+            ...mapGetters([
+                'isLoading'
+            ])
         },
         methods: {
             register: function () {

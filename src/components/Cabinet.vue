@@ -23,7 +23,6 @@
 
 <script>
     import {BButtonGroup, BButton} from 'bootstrap-vue'
-    import 'vue-awesome/icons/redo'
 
     export default {
         components: {BButtonGroup, BButton},
