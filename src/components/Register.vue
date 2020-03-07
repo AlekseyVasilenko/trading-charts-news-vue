@@ -5,9 +5,15 @@
             <h4>Register</h4>
 
             <form @submit.prevent="register">
-                <div class="form-group" v-for="(field, i) in fields" :key="i">
+                <div class="form-group" v-for="field in fields" :key="field.name">
                     <label :for="field.name">{{ field.label }}</label>
-                    <input :id="field.name" :type="field.type" class="form-control" v-model="field.value" required/>
+                    <b-form-input
+                        :id="field.name"
+                        :type="field.type"
+                        v-model="field.value"
+                        required
+                        trim
+                    />
                 </div>
 
                 <button type="submit" class="btn btn-primary">Register</button>
@@ -19,6 +25,7 @@
 
 <script>
     import Logo from './Logo'
+    import {BFormInput} from 'bootstrap-vue'
 
     export default {
         data: () => ({
@@ -50,7 +57,8 @@
             ]
         }),
         components: {
-            Logo
+            Logo,
+            BFormInput
         },
         methods: {
             register: function () {

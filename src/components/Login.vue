@@ -5,13 +5,13 @@
             <h4>Sign In</h4>
 
             <form @submit.prevent="login">
-                <div class="form-group" v-for="(field, key) in fields" :key="key">
-                    <label :for="key">{{ field.label }}</label>
+                <div class="form-group" v-for="(field, i) in fields" :key="field.name">
+                    <label :for="field.name">{{ field.label }}</label>
                     <b-form-input
-                        :id="key"
-                        :type="key"
+                        :id="field.name"
+                        :type="field.type"
                         v-model="field.value"
-                        :state="fieldState(key)"
+                        :state="fieldState(i)"
                         required
                         trim
                     />
@@ -36,20 +36,24 @@
     export default {
         components: {Logo, BFormInput, BFormInvalidFeedback},
         data: () => ({
-            fields: {
-                email: {
+            fields: [
+                {
                     label: 'Enter your E-mail',
+                    name: 'email',
                     value: '',
+                    type: 'email'
                 },
-                password: {
+                {
                     label: 'Enter your Password',
+                    name: 'password',
                     value: '',
+                    type: 'password'
                 }
-            }
+            ]
         }),
         methods: {
-            fieldState: function(key) {
-                if (key !== this.$store.state.error.field) {
+            fieldState: function(i) {
+                if (this.fields[i].name !== this.$store.state.error.field) {
                     return null
                 } else {
                     return false
@@ -58,11 +62,9 @@
             login: function () {
                 let payload = {};
 
-                for(let key in this.fields) {
-                    if (this.fields.hasOwnProperty(key)) {
-                        payload[key] = this.fields[key].value;
-                    }
-                }
+                this.fields.forEach(el => {
+                    payload[el.name] = el.value;
+                });
 
                 this.$store.dispatch('login', payload)
                     .then(() => this.$router.push('/cabinet'))
