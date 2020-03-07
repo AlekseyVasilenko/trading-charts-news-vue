@@ -50,7 +50,16 @@ export default {
             resolve()
         })
     },
-    setNews({commit}, news) {
-        commit('setNews', news);
-    }
+    setNewsData({commit}, newsData) {
+        commit('setNewsData', newsData);
+    },
+    setChartData({commit}, chartData) {
+        commit('setChartData', chartData);
+    },
+    request({commit}) {
+        commit('request');
+    },
+    success({commit}) {
+        commit('success');
+    },
 }

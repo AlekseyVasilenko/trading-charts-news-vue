@@ -22,8 +22,8 @@
                     </transition>
                 </div>
 
-                <button type="submit" class="btn btn-primary">
-                    <v-icon v-if="isLoading" name="sync" spin/>&nbsp;Log in
+                <button type="submit" class="btn btn-primary" :disabled="isLoading">
+                    <v-icon v-if="isLoading" name="redo" spin/>&nbsp;Log in
                 </button>
                 <router-link to="/register" tag="button" class="btn btn-link" type="button">Register page</router-link>
             </form>
@@ -34,7 +34,7 @@
 <script>
     import Logo from './Logo'
     import {BFormInput, BFormInvalidFeedback} from 'bootstrap-vue'
-    import 'vue-awesome/icons/sync'
+    import 'vue-awesome/icons/redo'
     import VIcon from 'vue-awesome/components/Icon'
     import {mapGetters} from "vuex";
 

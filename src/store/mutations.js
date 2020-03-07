@@ -1,4 +1,10 @@
 export default {
+    request(state) {
+        state.status = 'loading';
+    },
+    success(state) {
+        state.status = 'success';
+    },
     authRequest(state) {
         state.status = 'loading';
         state.error = {};
@@ -19,7 +25,11 @@ export default {
         state.user = {};
         state.error = {};
     },
-    setNews(state, news) {
-        state.news = news;
-    }
+    setNewsData(state, newsData) {
+        state.newsData = newsData;
+    },
+    setChartData(state, chartData) {
+        state.chartData = {};
+        state.chartData = {'ohlcv': chartData}
+    },
 }

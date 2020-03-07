@@ -17,7 +17,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">
-                    <v-icon v-if="isLoading" name="sync" spin/>&nbsp;Register
+                    <v-icon v-if="isLoading" name="redo" spin/>&nbsp;Register
                 </button>
                 <router-link to="/login" tag="button" class="btn btn-link" type="button">Login page</router-link>
             </form>
@@ -28,8 +28,9 @@
 <script>
     import Logo from './Logo'
     import {BFormInput} from 'bootstrap-vue'
-    import {mapGetters} from "vuex";
+    import 'vue-awesome/icons/redo'
     import VIcon from "vue-awesome/components/Icon";
+    import {mapGetters} from "vuex";
 
     export default {
         components: {Logo, BFormInput, VIcon},

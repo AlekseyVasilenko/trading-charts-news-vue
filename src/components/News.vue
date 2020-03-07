@@ -1,7 +1,7 @@
 <template>
     <div>
-        <b-button variant="outline-secondary" @click="reloadData" class="mb-3">
-            <v-icon name="redo"/>&nbsp;reload
+        <b-button variant="outline-secondary" @click="loadData" class="mb-3">
+            <v-icon name="redo" :spin="isLoading"/>&nbsp;reload
         </b-button>
 
         <b-pagination-nav :link-gen="linkGen" :number-of-pages="pagesCount" use-router></b-pagination-nav>
@@ -45,7 +45,8 @@
         }),
         computed: {
             ...mapGetters([
-                'getNews'
+                'isLoading',
+                'getNewsData',
             ]),
             apiLink() {
                 let {link, key} = this.apiParams;
@@ -53,7 +54,7 @@
                 return link + '&api_key=' + key;
             },
             pagesCount() {
-                return Math.ceil(this.getNews.length / this.newsPerPage) || 1;
+                return Math.ceil(this.getNewsData.length / this.newsPerPage) || 1;
             },
             curPage() {
                 return this.$route.query.page
@@ -63,7 +64,7 @@
                 const start = (curPage - 1) * this.newsPerPage,
                     end = start + this.newsPerPage;
 
-                return this.getNews.slice(start, end);
+                return this.getNewsData.slice(start, end);
             }
         },
         methods: {
@@ -71,20 +72,21 @@
                 return pageNum === 1 ? '?' : `?page=${pageNum}`
             },
             loadData() {
-                axios.get(this.apiLink)
-                    .then(response => {
-                        let news = response.data.Data;
+                this.$store.dispatch('request');
+                setTimeout(() => {
+                    axios.get(this.apiLink)
+                        .then(response => {
+                            let news = response.data.Data;
 
-                        this.$store.dispatch('setNews', news);
-                    })
-                    .catch(err => console.log(err))
-            },
-            reloadData() {
-                this.loadData();
+                            this.$store.dispatch('success');
+                            this.$store.dispatch('setNewsData', news);
+                        })
+                        .catch(err => console.log(err))
+                }, 1000);
             },
         },
         created() {
-            if (this.getNews.length === 0) {
+            if (this.getNewsData.length === 0) {
                 this.loadData()
             }
         }
