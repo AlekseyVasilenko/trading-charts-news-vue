@@ -8,22 +8,22 @@
             <b-col cols="8">
                 <div class="mb-3">
                     <b-form-select
-                            v-for="(selector, key) in selectors"
-                            :key="key"
-                            v-model="apiParams[key]"
-                            :options="selector"
-                            class="col-2 mr-1"
-                            @change="loadData"
+                        v-for="(selector, key) in selectors"
+                        :key="key"
+                        v-model="apiParams[key]"
+                        :options="selector"
+                        class="col-2 mr-1"
+                        @change="loadData"
                     />
                 </div>
 
                 <div ref="graph">
                     <trading-vue
-                            :data="chart.data"
-                            :width="chart.width"
-                            :color-back="chart.colors.colorBack"
-                            :color-grid="chart.colors.colorGrid"
-                            :color-text="chart.colors.colorText"
+                        :data="chart.data"
+                        :width="chart.width"
+                        :color-back="chart.colors.colorBack"
+                        :color-grid="chart.colors.colorGrid"
+                        :color-text="chart.colors.colorText"
                     />
                 </div>
             </b-col>
@@ -93,19 +93,18 @@
             apiLink() {
                 let {link, timeInterval} = this.apiParams;
 
-                return link + timeInterval
+                return link + timeInterval;
             },
             reloadInterval() {
                 let timeInterval = this.apiParams.timeInterval;
                 switch (timeInterval) {
-                    case 'minute':
-                        return 60000;
-                    case 'hour':
-                        return 3600000;
                     case 'day':
                         return 86400000;
+                    case 'hour':
+                        return 3600000;
+                    case 'minute':
                     default:
-                        return 1000;
+                        return 60000;
                 }
             },
 
@@ -115,12 +114,12 @@
                 this.chart.width = this.$refs.graph.clientWidth;
             },
             loadData() {
-                if (Object.keys(this.chart.data).length !== 0) this.chart.data = {};
-
                 let {crypto, symbol, historyLimit, key} = this.apiParams;
 
                 this.$store.dispatch('request');
                 setTimeout(() => {
+                    if (Object.keys(this.chart.data).length !== 0) this.chart.data = {};
+
                     axios.get(this.apiLink, {
                         params: {
                             fsym: crypto,
@@ -162,11 +161,10 @@
             window.dispatchEvent(event);
         },
         created() {
-            if (Object.keys(this.getChartData).length === 0) {
-                this.loadData();
-            } else {
-                this.$set(this.chart, 'data', this.getChartData);
-            }
+            Object.keys(this.getChartData).length === 0
+            ? this.loadData()
+            : this.$set(this.chart, 'data', this.getChartData);
+
             this.interval = setInterval(() => {
                 this.loadData();
                 this.apiParams.historyLimit++;
