@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-button variant="outline-secondary" @click="loadData" class="mb-3">
+        <b-button variant="outline-secondary" @click="loadData" :disabled="isLoading" class="mb-3">
             <v-icon name="redo" :spin="isLoading"/>&nbsp;reload
         </b-button>
 
@@ -19,7 +19,7 @@
 
                 <div ref="graph">
                     <trading-vue
-                            :data="getChartData"
+                            :data="chart.data"
                             :width="chart.width"
                             :color-back="chart.colors.colorBack"
                             :color-grid="chart.colors.colorGrid"
@@ -48,6 +48,7 @@
         data: () => ({
             interval: '',
             chart: {
+                data: {},
                 width: 600,
                 colors: {
                     colorBack: '#fff',
@@ -60,7 +61,7 @@
                 key: '532938bd62a8a84670c1beff115b8e875e88eef9d9156c3be40fa685d5b5d7f3',
                 crypto: 'BTC',
                 symbol: 'USD',
-                timeInterval: 'minute',
+                timeInterval: 'hour',
                 historyLimit: 50,
             },
             selectors: {
@@ -114,6 +115,8 @@
                 this.chart.width = this.$refs.graph.clientWidth;
             },
             loadData() {
+                if (Object.keys(this.chart.data).length !== 0) this.chart.data = {};
+
                 let {crypto, symbol, historyLimit, key} = this.apiParams;
 
                 this.$store.dispatch('request');
@@ -147,6 +150,7 @@
                             });
 
                             this.$store.dispatch('setChartData', ohlcv);
+                            this.$set(this.chart, 'data', this.getChartData);
                         })
                         .catch(err => console.log(err))
                 }, 1000);

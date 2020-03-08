@@ -29,7 +29,6 @@ export default {
         state.newsData = newsData;
     },
     setChartData(state, chartData) {
-        state.chartData = {};
-        state.chartData = {'ohlcv': chartData}
+        state.chartData = {...state.chartData, 'ohlcv': chartData};
     },
 }
