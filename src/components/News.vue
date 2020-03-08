@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-button variant="outline-secondary" @click="loadData" class="mb-3">
+        <b-button variant="outline-secondary" @click="loadData" :disabled="isLoading" class="mb-3">
             <v-icon name="redo" :spin="isLoading"/>&nbsp;reload
         </b-button>
 

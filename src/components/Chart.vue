@@ -164,6 +164,8 @@
         created() {
             if (Object.keys(this.getChartData).length === 0) {
                 this.loadData();
+            } else {
+                this.$set(this.chart, 'data', this.getChartData);
             }
             this.interval = setInterval(() => {
                 this.loadData();
