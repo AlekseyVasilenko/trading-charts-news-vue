@@ -15,20 +15,22 @@
 </template>
 
 <script>
+    import Vue from 'vue'
     import {BContainer} from 'bootstrap-vue'
     import ParticlesBg from "./components/ParticlesBg"
     import Header from "./components/Header"
     import {mapGetters} from 'vuex'
+    import VueParticles from 'vue-particles'
 
-    import keyframes from './assets/scss/keyframes.scss'
-    import particles from './assets/scss/particles.scss'
+    Vue.use(VueParticles);
+
+    import 'bootstrap/dist/css/bootstrap.css';
+    import 'bootstrap-vue/dist/bootstrap-vue.css';
+    import './assets/scss/keyframes.scss'
+    import './assets/scss/particles.scss'
 
     export default {
-        components: {
-            BContainer,
-            ParticlesBg,
-            Header
-        },
+        components: {BContainer, ParticlesBg, Header},
         computed: {
             ...mapGetters([
                 'isLoggedIn'

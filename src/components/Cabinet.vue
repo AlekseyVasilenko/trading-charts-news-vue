@@ -10,6 +10,7 @@
 
 <style scoped>
     .card {
-        margin: 80px auto 20px;
+        margin-top: 80px;
+        box-shadow: 0 0 20px 4px rgba(0, 0, 0, 0.2);
     }
 </style>

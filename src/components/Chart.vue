@@ -176,9 +176,3 @@
         },
     }
 </script>
-
-<style scoped>
-    .card {
-        margin-top: 80px;
-    }
-</style>
