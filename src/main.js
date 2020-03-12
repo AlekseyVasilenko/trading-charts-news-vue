@@ -9,12 +9,12 @@ Vue.config.productionTip = false;
 Vue.prototype.$http = Axios;
 const token = localStorage.getItem('token');
 if (token) {
-    Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+  Vue.prototype.$http.defaults.headers.common['Authorization'] = token
 }
 
 new Vue({
-    el: '#app',
-    store,
-    router,
-    render: h => h(App)
+  el: '#app',
+  store,
+  router,
+  render: h => h(App)
 });
