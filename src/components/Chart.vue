@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button variant="outline-secondary" @click="loadData" :disabled="isLoading" class="mb-3">
+    <b-button variant="outline-secondary" @click="loadData" :disabled="isLoading" class="mb-3" size="sm">
       <v-icon name="redo" :spin="isLoading"/>&nbsp;reload
     </b-button>
 
@@ -14,12 +14,15 @@
             :options="selector"
             class="col-2 mr-1"
             @change="loadData"
+            :disabled="selector.length <= 1"
+            size="sm"
           />
         </div>
 
         <div ref="graph">
           <trading-vue
-            :data="chart.data"
+            ref="chart"
+            :data="getChartData"
             :width="chart.width"
             :color-back="chart.colors.colorBack"
             :color-grid="chart.colors.colorGrid"
@@ -29,14 +32,50 @@
       </b-col>
 
       <b-col>
-        <h4 class="text-center">Your wallets:</h4>
+        <div v-if="Object.keys(getUserWallets).length > 0">
+          <h4 class="text-center mb-4">Your wallets:</h4>
+
+          <table class="table table-bordered table-sm mb-4">
+            <tbody>
+              <tr v-for="(wallet, key) in getUserWallets" :key="key">
+                <td class="text-right"><b>{{ key }}</b></td>
+                <td class="text-left">{{ wallet }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4 class="text-center mb-4">Buy/Sell:</h4>
+
+          <b-row class="mb-2">
+            <b-col>
+              <b-input-group :append="apiParams.crypto">
+                <b-form-input
+                  number
+                  v-model="currentCurrencyVal"
+                />
+              </b-input-group>
+            </b-col>
+            <b-col>
+              <b-input-group append="USD">
+                <b-form-input
+                  number
+                  v-model="currentCurrencyVal"
+                  :disabled="true"
+                />
+              </b-input-group>
+            </b-col>
+          </b-row>
+
+          <b-button variant="outline-success" block size="sm">Buy</b-button>
+          <b-button variant="outline-danger" block size="sm">Sell</b-button>
+        </div>
       </b-col>
     </b-row>
   </div>
 </template>
 
 <script>
-  import {BFormSelect, BButton, BRow, BCol} from 'bootstrap-vue'
+  import {BInputGroup, BFormSelect, BFormInput, BButton, BRow, BCol} from 'bootstrap-vue'
   import axios from 'axios'
   import TradingVue from 'trading-vue-js'
   import 'vue-awesome/icons/redo'
@@ -44,11 +83,12 @@
   import {mapGetters} from "vuex";
 
   export default {
-    components: {BFormSelect, BButton, BRow, BCol, TradingVue, VIcon},
+    components: {BInputGroup, BFormSelect, BFormInput, BButton, BRow, BCol, TradingVue, VIcon},
     data: () => ({
+      currentCurrency: 'BTC',
+      currentCurrencyVal: 0,
       interval: '',
       chart: {
-        data: {},
         width: 600,
         colors: {
           colorBack: '#fff',
@@ -71,7 +111,7 @@
         ],
         symbol: [
           {text: 'USD', value: 'USD'},
-          {text: 'EUR', value: 'EUR'},
+          // {text: 'EUR', value: 'EUR'},
         ],
         timeInterval: [
           {text: 'minute', value: 'minute'},
@@ -88,7 +128,8 @@
     computed: {
       ...mapGetters([
         'isLoading',
-        'getChartData'
+        'getChartData',
+        'getUserWallets'
       ]),
       apiLink() {
         let {link, timeInterval} = this.apiParams;
@@ -118,8 +159,6 @@
 
         this.$store.dispatch('request');
         setTimeout(() => {
-          if (Object.keys(this.chart.data).length !== 0) this.chart.data = {};
-
           axios.get(this.apiLink, {
             params: {
               fsym: crypto,
@@ -149,28 +188,32 @@
               });
 
               this.$store.dispatch('setChartData', ohlcv);
-              this.$set(this.chart, 'data', this.getChartData);
+              this.$refs.chart.resetChart();
             })
             .catch(err => console.log(err))
         }, 1000);
       },
     },
-    mounted() {
-      let event = new Event('resize');
-      window.addEventListener('resize', this.onResize);
-      window.dispatchEvent(event);
-    },
     created() {
-      Object.keys(this.getChartData).length === 0
-        ? this.loadData()
-        : this.$set(this.chart, 'data', this.getChartData);
+      Object.keys(this.getChartData).length === 0 && this.loadData();
 
       this.interval = setInterval(() => {
         this.loadData();
         this.apiParams.historyLimit++;
       }, this.reloadInterval);
     },
-    beforeDestroy() {
+    mounted() {
+      let event = new Event('resize');
+      window.addEventListener('resize', this.onResize);
+      window.dispatchEvent(event);
+
+      let payload = {
+        "wallets": JSON.stringify({"USD":15000,"BTC":1,"ETH":30}),
+        "email": "admin@admin.ru"
+      };
+      this.$store.dispatch('updateUserWallets', payload);
+    },
+    destroyed() {
       window.removeEventListener('resize', this.onResize);
       clearInterval(this.interval)
     },

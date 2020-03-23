@@ -16,16 +16,16 @@
             trim
           />
           <transition name="fade" mode="out-in">
-            <b-form-invalid-feedback v-if="$store.state.error.errText">
-              {{ $store.state.error.errText }}
+            <b-form-invalid-feedback v-if="$store.state.auth.error.errText">
+              {{ $store.state.auth.error.errText }}
             </b-form-invalid-feedback>
           </transition>
         </div>
 
-        <button type="submit" class="btn btn-primary" :disabled="isLoading">
+        <b-button type="submit" variant="primary" :disabled="isLoading">
           <v-icon v-if="isLoading" name="redo" spin/>&nbsp;Log in
-        </button>
-        <router-link to="/register" tag="button" class="btn btn-link" type="button">Register page</router-link>
+        </b-button>
+        <b-button to="/register" variant="link">Register page</b-button>
       </form>
     </div>
   </div>
@@ -33,13 +33,13 @@
 
 <script>
   import Logo from './Logo'
-  import {BFormInput, BFormInvalidFeedback} from 'bootstrap-vue'
+  import {BButton, BFormInput, BFormInvalidFeedback} from 'bootstrap-vue'
   import 'vue-awesome/icons/redo'
   import VIcon from 'vue-awesome/components/Icon'
   import {mapGetters} from "vuex";
 
   export default {
-    components: {Logo, BFormInput, BFormInvalidFeedback, VIcon},
+    components: {Logo, BButton, BFormInput, BFormInvalidFeedback, VIcon},
     data: () => ({
       fields: [
         {
@@ -63,7 +63,7 @@
     },
     methods: {
       fieldState: function (i) {
-        if (this.fields[i].name !== this.$store.state.error.field) {
+        if (this.fields[i].name !== this.$store.state.auth.error.field) {
           return null
         } else {
           return false

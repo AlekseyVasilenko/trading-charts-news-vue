@@ -13,21 +13,32 @@ class Db {
         id integer PRIMARY KEY,
         name text,
         email text UNIQUE,
-        user_pass text)`;
+        password text,
+        wallets text
+      )
+    `;
     return this.db.run(sql);
   }
 
   selectByEmail(email, callback) {
     return this.db.get(
-      `SELECT * FROM user WHERE email = ?`,
-      [email], function (err, row) {
+      'SELECT * FROM user WHERE email = ?',
+      email, (err, row) => {
         callback(err, row)
       })
   }
 
-  insert(user, callback) {
+  registerUser(user, callback) {
     return this.db.run(
-      'INSERT INTO user (name,email,user_pass) VALUES (?,?,?)',
+      'INSERT INTO user (name, email, password) VALUES (?,?,?)',
+      user, (err) => {
+        callback(err)
+      })
+  }
+
+  updateUserWallets(user, callback) {
+    return this.db.run(
+      'UPDATE user SET wallets = ? WHERE email = ?',
       user, (err) => {
         callback(err)
       })

@@ -16,10 +16,10 @@
           />
         </div>
 
-        <button type="submit" class="btn btn-primary">
+        <b-button type="submit" variant="primary" :disabled="isLoading">
           <v-icon v-if="isLoading" name="redo" spin/>&nbsp;Register
-        </button>
-        <router-link to="/login" tag="button" class="btn btn-link" type="button">Login page</router-link>
+        </b-button>
+        <b-button to="/login" variant="link">Login page</b-button>
       </form>
     </div>
   </div>
@@ -27,13 +27,13 @@
 
 <script>
   import Logo from './Logo'
-  import {BFormInput} from 'bootstrap-vue'
+  import {BButton, BFormInput} from 'bootstrap-vue'
   import 'vue-awesome/icons/redo'
   import VIcon from "vue-awesome/components/Icon";
   import {mapGetters} from "vuex";
 
   export default {
-    components: {Logo, BFormInput, VIcon},
+    components: {Logo, BButton, BFormInput, VIcon},
     data: () => ({
       fields: [
         {

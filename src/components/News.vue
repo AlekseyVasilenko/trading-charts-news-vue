@@ -1,10 +1,10 @@
 <template>
   <div>
-    <b-button variant="outline-secondary" @click="loadData" :disabled="isLoading" class="mb-3">
+    <b-button variant="outline-secondary" @click="loadData" :disabled="isLoading" class="mb-3" size="sm">
       <v-icon name="redo" :spin="isLoading"/>&nbsp;reload
     </b-button>
 
-    <b-pagination-nav :link-gen="linkGen" :number-of-pages="pagesCount" use-router></b-pagination-nav>
+    <b-pagination-nav :link-gen="linkGen" :number-of-pages="pagesCount" use-router size="sm"></b-pagination-nav>
 
     <b-card-group columns>
       <b-card
@@ -23,7 +23,7 @@
       </b-card>
     </b-card-group>
 
-    <b-pagination-nav :link-gen="linkGen" :number-of-pages="pagesCount" use-router></b-pagination-nav>
+    <b-pagination-nav :link-gen="linkGen" :number-of-pages="pagesCount" use-router size="sm"></b-pagination-nav>
   </div>
 </template>
 

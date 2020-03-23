@@ -19,7 +19,7 @@
         </b-button>
       </b-button-group>
 
-      <b-dropdown :text="this.$store.state.user.email" size="sm" split>
+      <b-dropdown :text="this.$store.state.auth.user.email" size="sm" split>
         <b-dropdown-item @click="logout">Logout</b-dropdown-item>
       </b-dropdown>
     </div>

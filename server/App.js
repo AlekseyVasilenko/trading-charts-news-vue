@@ -21,7 +21,7 @@ const allowCrossDomain = function (req, res, next) {
 app.use(allowCrossDomain);
 
 router.post('/login', (req, res) => {
-  db.selectByEmail(req.body.email, (err, user) => {
+  db.selectByEmail([req.body.email], (err, user) => {
     if (err) return res.status(500).send({
       field: '',
       errText: 'Error on the server.',
@@ -32,7 +32,7 @@ router.post('/login', (req, res) => {
       errText: 'No user found.',
     });
 
-    let passwordIsValid = bcrypt.compareSync(req.body.password, user.user_pass);
+    let passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
 
     // if (!passwordIsValid) return res.status(401).send({auth: false, token: null});
     if (!passwordIsValid) return res.status(401).send({
@@ -56,15 +56,16 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/register', function (req, res) {
-  db.insert([
+  db.registerUser([
       req.body.name,
       req.body.email,
       bcrypt.hashSync(req.body.password, 8)
     ],
-    function (err) {
-      if (err) return res.status(500).send("There was a problem registering the user.");
+    (err) => {
+      if (err) return res.status(500).send('There was a problem registering the user.');
+
       db.selectByEmail(req.body.email, (err, user) => {
-        if (err) return res.status(500).send("There was a problem getting user");
+        if (err) return res.status(500).send('There was a problem getting user');
 
         let token = jwt.sign(
           {
@@ -81,6 +82,22 @@ router.post('/register', function (req, res) {
             token: token,
             user: user
           });
+      });
+    });
+});
+
+router.post('/update-user-wallets', function (req, res) {
+  db.updateUserWallets([
+      req.body.wallets,
+      req.body.email
+    ],
+    (err) => {
+      if (err) return res.status(500).send('There was a problem apdating user wallets.');
+
+      db.selectByEmail([req.body.email], (err) => {
+        if (err) return res.status(500).send('There was a problem getting user');
+
+        res.status(200).send('User wallets updated successful.');
       });
     });
 });

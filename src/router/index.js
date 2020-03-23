@@ -67,7 +67,6 @@ router.beforeEach((to, from, next) => {
     store.getters.isLoggedIn
       ? next({name: 'cabinet'})
       : next()
-    // next()
   }
 });
 
