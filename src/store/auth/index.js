@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from '../../router'
 
 export default {
   state: {
@@ -43,45 +44,41 @@ export default {
   },
   actions: {
     login({commit}, user) {
-      return new Promise((resolve, reject) => {
-        commit('authRequest');
-        setTimeout(() => {
-          axios({url: 'http://localhost:3000/login', data: user, method: 'POST'})
-            .then(resp => {
-              const {token, user} = resp.data;
-              localStorage.setItem('token', token);
-              localStorage.setItem('user', JSON.stringify(user));
-              axios.defaults.headers.common['Authorization'] = token;
-              commit('authSuccess', {token, user});
-              resolve(resp)
-            })
-            .catch(err => {
-              commit('authError', err.response.data);
-              localStorage.removeItem('token');
-              reject(err)
-            })
-        }, 1000);
-      })
+      commit('authRequest');
+      setTimeout(() => { // for delay simulation
+        axios.post('http://localhost:3000/login', user)
+          .then(resp => {
+            const {token, user} = resp.data;
+            localStorage.setItem('token', token);
+            localStorage.setItem('user', JSON.stringify(user));
+            axios.defaults.headers.common['Authorization'] = token;
+            commit('authSuccess', {token, user});
+            router.push('/cabinet')
+          })
+          .catch(err => {
+            console.log(err)
+            commit('authError', err.response.data);
+            localStorage.removeItem('token');
+          })
+      }, 1000);
     },
     register({commit}, user) {
-      return new Promise((resolve, reject) => {
-        commit('authRequest');
-        setTimeout(() => {
-          axios({url: 'http://localhost:3000/register', data: user, method: 'POST'})
-            .then(resp => {
-              const {token, user} = resp.data;
-              localStorage.setItem('token', token);
-              axios.defaults.headers.common['Authorization'] = token;
-              commit('authSuccess', {token, user});
-              resolve(resp)
-            })
-            .catch(err => {
-              commit('authError', err);
-              localStorage.removeItem('token');
-              reject(err)
-            })
-        }, 1000);
-      })
+      commit('authRequest');
+      setTimeout(() => { // for delay simulation
+        axios.post('http://localhost:3000/register', user)
+          .then(resp => {
+            const {token, user} = resp.data;
+            localStorage.setItem('token', token);
+            axios.defaults.headers.common['Authorization'] = token;
+            commit('authSuccess', {token, user});
+            router.push('/secure')
+          })
+          .catch(err => {
+            console.log(err)
+            commit('authError', err);
+            localStorage.removeItem('token');
+          })
+      }, 1000);
     },
     logout({commit}) {
       return new Promise((resolve, reject) => {

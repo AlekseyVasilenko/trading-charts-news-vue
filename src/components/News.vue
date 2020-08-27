@@ -4,7 +4,7 @@
       <v-icon name="redo" :spin="isLoading"/>&nbsp;reload
     </b-button>
 
-    <b-pagination-nav :link-gen="linkGen" :number-of-pages="pagesCount" use-router size="sm"></b-pagination-nav>
+    <b-pagination-nav :link-gen="linkGen" :number-of-pages="pagesCount" use-router size="sm"/>
 
     <b-card-group columns>
       <b-card
@@ -23,7 +23,7 @@
       </b-card>
     </b-card-group>
 
-    <b-pagination-nav :link-gen="linkGen" :number-of-pages="pagesCount" use-router size="sm"></b-pagination-nav>
+    <b-pagination-nav v-show="!isLoading" :link-gen="linkGen" :number-of-pages="pagesCount" use-router size="sm"/>
   </div>
 </template>
 

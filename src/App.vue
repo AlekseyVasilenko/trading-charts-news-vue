@@ -22,12 +22,13 @@
   import {mapGetters} from 'vuex'
   import VueParticles from 'vue-particles'
 
-  Vue.use(VueParticles);
-
   import 'bootstrap/dist/css/bootstrap.css';
   import 'bootstrap-vue/dist/bootstrap-vue.css';
+  import './assets/scss/app.scss'
   import './assets/scss/keyframes.scss'
   import './assets/scss/particles.scss'
+
+  Vue.use(VueParticles);
 
   export default {
     components: {BContainer, ParticlesBg, Header},
@@ -48,31 +49,3 @@
     }
   }
 </script>
-
-<style>
-  html {
-    height: 100%;
-  }
-
-  body {
-    height: 100%;
-    background-color: #f5f5f5;
-  }
-
-  #app {
-    color: #2c3e50;
-    margin: auto;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .container {
-    margin: auto;
-  }
-
-  .auth-form {
-    max-width: 400px;
-  }
-</style>

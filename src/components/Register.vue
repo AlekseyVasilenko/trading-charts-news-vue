@@ -76,8 +76,6 @@
         });
 
         this.$store.dispatch('register', payload)
-          .then(() => this.$router.push('/secure'))
-          .catch(err => console.log(err))
       }
     }
   }

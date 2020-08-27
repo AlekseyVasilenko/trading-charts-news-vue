@@ -28,7 +28,7 @@ export default {
       return new Promise((resolve, reject) => {
         commit('request');
         setTimeout(() => {
-          axios({url: 'http://localhost:3000/update-user-wallets', data: payload, method: 'POST'})
+          axios.post('http://localhost:3000/update-user-wallets', payload)
             .then(resp => {
               commit('success');
               console.log('Данные кошельков успешно обновлены');

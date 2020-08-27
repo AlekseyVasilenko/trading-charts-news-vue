@@ -70,15 +70,13 @@
         }
       },
       login: function () {
-        let payload = {};
+        let user = {};
 
         this.fields.forEach(el => {
-          payload[el.name] = el.value;
+          user[el.name] = el.value;
         });
 
-        this.$store.dispatch('login', payload)
-          .then(() => this.$router.push('/cabinet'))
-          .catch(err => console.log(err))
+        this.$store.dispatch('login', user)
       },
     }
   }

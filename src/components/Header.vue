@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import scss from '../assets/scss/header.scss'
+  import '../assets/scss/header.scss'
 
   import {BButton, BButtonGroup, BDropdown, BDropdownItem} from 'bootstrap-vue'
 

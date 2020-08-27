@@ -14,7 +14,7 @@
             :options="selector"
             class="col-2 mr-1"
             @change="loadData"
-            :disabled="selector.length <= 1"
+            :disabled="selector.length < 2"
             size="sm"
           />
         </div>
@@ -101,7 +101,7 @@
         key: '532938bd62a8a84670c1beff115b8e875e88eef9d9156c3be40fa685d5b5d7f3',
         crypto: 'BTC',
         symbol: 'USD',
-        timeInterval: 'hour',
+        timeInterval: 'minute',
         historyLimit: 50,
       },
       selectors: {
@@ -148,7 +148,6 @@
             return 60000;
         }
       },
-
     },
     methods: {
       onResize() {
@@ -168,23 +167,15 @@
             }
           })
             .then(response => {
-              let candles = response.data.Data.Data;
-              let ohlcv = [];
+              let candles = response.data.Data.Data,
+                  ohlcv = [];
 
               this.$store.dispatch('success');
 
               candles.forEach(candle => {
-                let candleParams = [],
-                  {time, open, high, low, close, volumeto} = candle;
+                let {time, open, high, low, close, volumeto} = candle;
 
-                candleParams.push(time * 1000);
-                candleParams.push(open);
-                candleParams.push(high);
-                candleParams.push(low);
-                candleParams.push(close);
-                candleParams.push(volumeto);
-
-                ohlcv.push(candleParams);
+                ohlcv.push([time * 1000, open, high, low, close, volumeto]);
               });
 
               this.$store.dispatch('setChartData', ohlcv);
