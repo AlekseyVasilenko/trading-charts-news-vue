@@ -26,7 +26,7 @@
 </template>
 
 <script>
-  import Logo from './Logo'
+  import Logo from '../Common/Logo'
   import {BButton, BFormInput} from 'bootstrap-vue'
   import 'vue-awesome/icons/redo'
   import VIcon from "vue-awesome/components/Icon";
@@ -69,13 +69,13 @@
     },
     methods: {
       register: function () {
-        let payload = {};
+        let user = {};
 
         this.fields.forEach((val) => {
-          payload[val.name] = val.value;
+          user[val.name] = val.value;
         });
 
-        this.$store.dispatch('register', payload)
+        this.$store.dispatch('register', user)
       }
     }
   }

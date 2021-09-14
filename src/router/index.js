@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store'
-import Login from '../components/Login.vue'
-import Cabinet from '../components/Cabinet.vue'
-import Register from '../components/Register.vue'
+import Login from '../components/Auth/Login.vue'
+import Cabinet from '../components/Cabinet/Cabinet.vue'
+import Register from '../components/Auth/Register.vue'
 import E404 from '../components/E404.vue'
-import Chart from '../components/Chart.vue'
-import News from '../components/News.vue'
+import Chart from '../components/Cabinet/Chart.vue'
+import News from '../components/Cabinet/News.vue'
 
 Vue.use(VueRouter);
 

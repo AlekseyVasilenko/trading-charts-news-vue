@@ -1,7 +1,7 @@
 <template>
   <div class="logo">
     <svg>
-      <use xlink:href="../../static/icons.svg#logo"></use>
+      <use xlink:href="../../../static/icons.svg#logo"></use>
     </svg>
   </div>
 </template>

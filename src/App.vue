@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="app">
     <transition name="fade" mode="out-in">
       <Header v-if="isLoggedIn"/>
     </transition>
@@ -17,8 +17,8 @@
 <script>
   import Vue from 'vue'
   import {BContainer} from 'bootstrap-vue'
-  import ParticlesBg from "./components/ParticlesBg"
-  import Header from "./components/Header"
+  import ParticlesBg from "./components/Particles/ParticlesBg"
+  import Header from "./components/Header/Header"
   import {mapGetters} from 'vuex'
   import VueParticles from 'vue-particles'
 
@@ -26,7 +26,7 @@
   import 'bootstrap-vue/dist/bootstrap-vue.css';
   import './assets/scss/app.scss'
   import './assets/scss/keyframes.scss'
-  import './assets/scss/particles.scss'
+  import './components/Particles/particles.scss'
 
   Vue.use(VueParticles);
 

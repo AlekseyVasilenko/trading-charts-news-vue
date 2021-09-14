@@ -3,7 +3,7 @@
     <div class="container">
       <div class="header__logo">
         <svg>
-          <use xlink:href="../../static/icons.svg#logo"></use>
+          <use xlink:href="../../../static/icons.svg#logo"></use>
         </svg>
       </div>
 
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import '../assets/scss/header.scss'
+  import './header.scss'
 
   import {BButton, BButtonGroup, BDropdown, BDropdownItem} from 'bootstrap-vue'
 
